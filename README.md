@@ -1,6 +1,6 @@
 # SwasthiQ Pharmacy CRM
 
-> Full-stack Pharmacy Module built for the SwasthiQ SDE Intern Assignment
+### Live Link: 'https://swasthiq-pharmacy.netlify.app'
 
 A production-grade Pharmacy Management System with real-time inventory tracking, sales management, and purchase order workflows.
 
