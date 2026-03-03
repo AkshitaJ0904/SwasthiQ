@@ -41,10 +41,15 @@ def get_dashboard_summary(db: Session = Depends(get_db)):
         Sale.created_at >= yesterday_start,
         Sale.created_at <= yesterday_end,
         Sale.status == "COMPLETED"
-    ).scalar() or 1
+    ).scalar() or 0  # ← change to 0, not 1
 
-    growth = ((today_sales_result - yesterday_sales) / yesterday_sales) * 100 if yesterday_sales else 0
-
+    # Fix growth logic
+    if yesterday_sales == 0 and today_sales_result == 0:
+        growth = 0.0          # both zero → no change
+    elif yesterday_sales == 0:
+        growth = 100.0        # new sales today, nothing yesterday → show +100%
+    else:
+        growth = ((today_sales_result - yesterday_sales) / yesterday_sales) * 100
     items_sold = db.query(func.sum(SaleItem.quantity)).join(Sale).filter(
         Sale.created_at >= today_start,
         Sale.created_at <= today_end,
